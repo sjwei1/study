@@ -29,23 +29,19 @@ public class NioServer {
             }
             // 遍历连接获取数据
             Iterator<SocketChannel> iterator = channelList.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 SocketChannel next = iterator.next();
                 ByteBuffer byteBuffer = ByteBuffer.allocateDirect(128);
                 // 非阻塞模式read方法不会阻塞,否则阻塞
                 int read = next.read(byteBuffer);
                 // 如果有数据,打印出来
-                if(read!=-1){
-
+                if (read > 0) {
+                    System.out.println("接收到的数据" + new String(byteBuffer.array()));
+                } else if (read != -1) {
+                    iterator.remove();
+                    System.out.println("客户端断开连接");
                 }
-
-
-
             }
-
         }
-
     }
-
-
 }
